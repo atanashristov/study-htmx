@@ -122,3 +122,54 @@ Or we can also trigger the request once the element is scrolled into the viewpor
 See: [triggers documentation](https://htmx.org/docs/#triggers)
 
 ### 14. POST request
+
+Create a form with `hx-post` attribute. Note: does not need to be a form, any element can trigger a post.
+
+On a form, it automatically gets triggered on form submit. Obviously we could change the event with `hx-trigger`:
+
+```html
+<form hx-post="/note" hx-target="ul" hx-swap="outerHTML">
+  <p>
+    <label for="note">Your note</label>
+    <input type="text" id="note" name="note" />
+  </p>
+  <ul>...</ul>
+```
+
+We also set attribute `hx-target="ul"` so we target the first `ul` element inside the form. And we also set attribute `hx-swap="outerHTML"`, so that we completely replace the `ul` node instead of just it's inner content.
+
+The post will submit the note by `name="note`" attribute, or whatever the value of the `name` attribute is.
+
+On the server we configure middleware, so that node scans all the request form data and adds to the request object as `req.body`:
+
+```js
+app.use(express.urlencoded({ extended: false }));
+```
+
+Now we create method to handle the post. By default, the returned html will replace the innerHTML of the form:
+
+```js
+app.post('/note', (req, res) => {
+  const { note } = req.body;
+  HTMX_KNOWLEDGE.unshift(note);
+  // usually we would do `response.redirect()`, so that the user can see the new note in the list.
+  res.send(`
+    <ul>
+      ${HTMX_KNOWLEDGE.map(item => `<li>${item}</li>`).join('')}
+    </ul>
+  `);
+});
+```
+
+### 17. Picking parts of response with hx-select
+
+We could use `hx-select` to tell HTMX which part from the response to insert into he target element. We specify via CSS selector what part of the HTML response we want to select.
+
+```html
+  <form
+    hx-post="/note"
+    hx-target="ul"
+    hx-swap="innerHTML"
+    hx-select="ul li:first-child"
+  >
+```
