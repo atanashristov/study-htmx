@@ -1,12 +1,14 @@
-# 02: Essentials
+# HTMX The Practical Guide
 
-## Links
+## 02. HTMX Essentials
+
+### Links
 
 Link to different web sites:
 
 - [htmx](https://htmx.org/)
 
-## 7. Installing htmx
+### 02.07. Installing htmx
 
 We can download or include from CDN.
 
@@ -16,7 +18,7 @@ We save a copy in *01_Code/02_Essentials/public/htmx.js*. Then we include with `
 
 We use `defer` to make sure it loads only after the page has been rendered. Thereof if we are using htmx anywere, the script will be ready to handle this.
 
-## 8. Using HTMX & sending GET request
+### 02.08. Using HTMX & sending GET request
 
 We use `hx-get` which sends a GET request. We provide a path. It fires by default on click. By. default it outputs the response from server into the element that triggered the request.
 
@@ -36,7 +38,7 @@ app.get('/info', (req, res) => {
 });
 ```
 
-## 9. Controlling response content with hx-swap
+### 02.09. Controlling response content with hx-swap
 
 We use `hx-swap` attribute, so that instead of outputting the response inside the button, we replace the button. We specify what we want to swap. `innerHtml` is the default. Let's use `outerHtml`:
 
@@ -44,7 +46,7 @@ We use `hx-swap` attribute, so that instead of outputting the response inside th
 <button hx-get="/info" hx-swap="outerHTML">Learn More</button>
 ```
 
-## 11. Response target with hx-target
+### 02.11. Response target with hx-target
 
 If we want to render elsewhere we use `hx-target`. It uses css selector to target.
 
@@ -74,7 +76,7 @@ We still can use `hx-swap` to define what part of the target we replace.
 
 If we target collection of elements, only the first will get targeted.
 
-## 12. Changing the request trigger with hx-trigger
+### 02.12. Changing the request trigger with hx-trigger
 
 By default the event that triggers the request is the most obvious event for that element. For form is submit. For button, and most elements, it is on click.
 
@@ -121,7 +123,7 @@ Or we can also trigger the request once the element is scrolled into the viewpor
 
 See: [triggers documentation](https://htmx.org/docs/#triggers)
 
-### 14. POST request
+#### 02.14. POST request
 
 Create a form with `hx-post` attribute. Note: does not need to be a form, any element can trigger a post.
 
@@ -161,7 +163,7 @@ app.post('/note', (req, res) => {
 });
 ```
 
-### 17. Picking parts of response with hx-select
+#### 02.17. Picking parts of response with hx-select
 
 We could use `hx-select` to tell HTMX which part from the response to insert into he target element. We specify via CSS selector what part of the HTML response we want to select.
 
