@@ -32,8 +32,6 @@ app.get('/', (req, res) => {
           <form
             hx-post="/note"
             hx-target="ul"
-            hx-swap="innerHTML"
-            hx-select="ul li:first-child"
           >
             <p>
               <label for="note">Your note</label>
