@@ -35,18 +35,14 @@ app.get('/', (req, res) => {
           </form>
         </section>
         <section>
-          <ul id="goals">
+          <ul id="goals" hx-swap="delete">
           ${courseGoals.map(
     (goal) => `
             <li id="goal-${goal.id}">
               <span>${goal.id}: ${goal.goal}</span>
               <button
                 hx-delete="/goal/${goal.id}"
-                hx-target="#goal-${goal.id}"
-                hx-swap="outerHTML"
-              >
-                Remove
-              </button>
+                hx-target="#goal-${goal.id}">Remove</button>
             </li>
           `
   ).join(' ')}
@@ -67,8 +63,7 @@ app.post('/goal', (req, res) => {
       <span>${id}: ${goal}</span>
       <button
         hx-delete="/goal/${id}"
-        hx-target="#goal-${id}"
-        hx-swap="outerHTML">Remove</button>
+        hx-target="#goal-${id}">Remove</button>
     </li>
   `)
 });
