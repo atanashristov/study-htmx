@@ -63,3 +63,32 @@ Also, we can use `delete` instead of `outerHTML`:
 ```
 
 See: <https://htmx.org/attributes/hx-swap/>
+
+### 03.24. Reusing HTMX Fragments
+
+In our code we repeat the same markup when we return the page and when we add new TODO item to build a lis element with a TODO.
+
+Simple solution is to create a server side function to remove markup duplication:
+
+```js
+function renderGoalListItem (goal) {
+  return `
+    <li id="goal-${goal.id}">
+      <span>${goal.id}: ${goal.goal}</span>
+      <button
+        hx-delete="/goal/${goal.id}"
+        hx-target="#goal-${goal.id}">Remove</button>
+    </li>
+  `;
+}
+```
+
+And we can reuse it:
+
+```html
+<section>
+ <ul id="goals" hx-swap="delete">
+ ${courseGoals.map(renderGoalListItem).join(' ')}
+ </ul>
+</section>
+```

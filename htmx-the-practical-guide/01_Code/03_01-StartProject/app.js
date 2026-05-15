@@ -2,6 +2,17 @@ import express from 'express';
 
 const courseGoals = [];
 
+function renderGoalListItem (goal) {
+  return `
+    <li id="goal-${goal.id}">
+      <span>${goal.id}: ${goal.goal}</span>
+      <button
+        hx-delete="/goal/${goal.id}"
+        hx-target="#goal-${goal.id}">Remove</button>
+    </li>
+  `;
+}
+
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
@@ -36,16 +47,7 @@ app.get('/', (req, res) => {
         </section>
         <section>
           <ul id="goals" hx-swap="delete">
-          ${courseGoals.map(
-    (goal) => `
-            <li id="goal-${goal.id}">
-              <span>${goal.id}: ${goal.goal}</span>
-              <button
-                hx-delete="/goal/${goal.id}"
-                hx-target="#goal-${goal.id}">Remove</button>
-            </li>
-          `
-  ).join(' ')}
+            ${courseGoals.map(renderGoalListItem).join(' ')}
           </ul>
         </section>
       </main>
@@ -58,14 +60,7 @@ app.post('/goal', (req, res) => {
   const { goal } = req.body;
   const id = new Date().getTime();
   courseGoals.push({ id, goal });
-  res.send(`
-    <li id="goal-${id}">
-      <span>${id}: ${goal}</span>
-      <button
-        hx-delete="/goal/${id}"
-        hx-target="#goal-${id}">Remove</button>
-    </li>
-  `)
+  res.send(renderGoalListItem({ id, goal }));
 });
 
 app.delete('/goal/:id', (req, res) => {
